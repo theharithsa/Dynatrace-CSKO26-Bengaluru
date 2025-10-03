@@ -1,225 +1,254 @@
-# Dynatrace DEM End-to-End Troubleshooting Guide
+# 🔧 **Comprehensive Troubleshooting Guide for Dynatrace DEM**
 
-A field-ready runbook for Web Real User Monitoring (RUM), Mobile RUM, Session Replay, and Synthetic Monitoring.
+A complete guide for diagnosing and resolving Digital Experience Monitoring issues in Dynatrace.
 
-## Table of Contents
+## 📋 Table of Contents
 
-- [Quick Triage (Use This First)](#quick-triage-use-this-first)
-- [Web RUM Troubleshooting](#web-rum-troubleshooting)
-  - [2.1 RUM Injected but No Data](#21-rum-injected-but-no-data)
-  - [2.2 Data Arrives but Is Not Visible/Complete](#22-data-arrives-but-is-not-visiblecomplete)
-  - [2.3 Sessions Missing, Split, or Unidentified](#23-sessions-missing-split-or-unidentified)
-  - [2.4 CSP, CORS, Beacon, and Cookies](#24-csp-cors-beacon-and-cookies)
-  - [2.5 Manual Customisation and dtrum API](#25-manual-customisation-and-dtrum-api)
-- [Session Replay (Web)](#session-replay-web)
-- [Mobile RUM (Android, iOS, Hybrid)](#mobile-rum-android-ios-hybrid)
-  - [4.1 Android](#41-android)
-  - [4.2 iOS](#42-ios)
-  - [4.3 Hybrid (Native + WebView)](#43-hybrid-native--webview)
-- [Front-end & Back-end Correlation](#front-end--back-end-correlation)
-- [Quality Signals (Apdex, UX Outliers)](#quality-signals-apdex-ux-outliers)
-- [Synthetic Monitoring](#synthetic-monitoring)
-  - [7.1 Monitors Failing](#71-monitors-failing)
-  - [7.2 Monitors Not Running](#72-monitors-not-running)
-- [Reference Snippets & Checklists](#reference-snippets--checklists)
-- [Source Index](#source-index)
-
----
-
-## Quick Triage (Use This First)
-
-1. **Run the application Health Check** (Web > App > More (...) > *Health check*). Confirms RUM status, injection diagnostics, JavaScript version distribution, and configuration issues (RUM disabled, opt-in/DNT enabled, DEM unit exhaustion). [[HC]]
-2. **Identify the injection method.** Auto-injection (OneAgent) versus manual or agentless instrumentation determines where the snippet loads from, the default beacon endpoint, and the CSP/CORS rules you must allow. [[AUTO]]
-3. **Trace the beacon path.** In DevTools > Network, filter for `rb_` or `dtrum`. Check status codes, endpoint host, and cross-origin behaviour. If cross-origin, configure a beacon-origin allowlist (CORS) in Dynatrace. [[BEACON]] [[CORS]]
-4. **Verify the RUM JavaScript track and browser coverage.** Pin to the correct track. Newer tracks drop legacy Internet Explorer support; align with your compatibility needs. [[VERSIONS]]
+- [1. RUM Data Collection Issues](#1-rum-data-collection-issues)
+  - [1.1 RUM script injected, but no data visible in Dynatrace](#11-rum-script-injected-but-no-data-visible-in-dynatrace)
+  - [1.2 Data reported in DevTools, but not visible in Dynatrace UI](#12-data-reported-in-devtools-but-not-visible-in-dynatrace-ui)
+  - [1.3 User sessions missing for certain users](#13-user-sessions-missing-for-certain-users)
+- [2. Mobile Monitoring Challenges](#2-mobile-monitoring-challenges)
+  - [2.1 Cordova / Hybrid app session splitting](#21-cordova--hybrid-app-session-splitting)
+  - [2.2 Mobile SDK crashes / ANRs not reported](#22-mobile-sdk-crashes--anrs-not-reported)
+- [3. Instrumentation & Compatibility](#3-instrumentation--compatibility)
+  - [3.1 Injection types (auto, manual, tag manager)](#31-injection-types-auto-manual-tag-manager)
+  - [3.2 Unsupported technologies / frameworks](#32-unsupported-technologies--frameworks)
+- [4. Data Completeness & Correlation](#4-data-completeness--correlation)
+  - [4.1 Missing actions (esp. custom APIs)](#41-missing-actions-esp-custom-apis)
+  - [4.2 Front-end to back-end correlation failures](#42-front-end-to-back-end-correlation-failures)
+- [5. Quality & Metrics](#5-quality--metrics)
+  - [5.1 Low Apdex despite "everything looks fine"](#51-low-apdex-despite-everything-looks-fine)
+- [6. Synthetic Monitoring](#6-synthetic-monitoring)
+  - [6.1 Synthetic browser monitor works locally, fails when deployed](#61-synthetic-browser-monitor-works-locally-fails-when-deployed)
+  - [6.2 HTTP/API monitors failing randomly](#62-httpapi-monitors-failing-randomly)
+- [7. General Troubleshooting Checklist](#7-general-troubleshooting-checklist)
+- [Summary](#-summary)
 
 ---
 
-## Web RUM Troubleshooting
+## **1. RUM Data Collection Issues**
 
-### 2.1 RUM Injected but No Data
+### **1.1 RUM script injected, but no data visible in Dynatrace**
 
-**Symptoms:** Snippet present or OneAgent reports injection, but no user actions or sessions ingest.
+* **Symptoms:** Script present in HTML (`ruxitagentjs` or via tag manager), but no sessions appear.
+* **Root Causes:**
 
-**Root causes and fixes**
+  * Beacon requests blocked (firewall, proxy, CSP headers).
+  * Application domain not mapped in Dynatrace Application detection rules.
+  * Auto-injection disabled for process group.
+* **Troubleshooting:**
 
-- **RUM disabled, DEM quota exhausted, opt-in or DNT blocking.** Use Health Check to re-enable RUM, increase quota, or adjust privacy controls. [[HC]]
-- **Beacon blocked (CSP, CORS, proxy).** See [Section 2.4](#24-csp-cors-beacon-and-cookies) for allowlist examples. [[CSP]] [[CORS]]
-- **Injection not executing.** Review automatic-injection rules and ensure HTML is valid for OneAgent to insert scripts. [[AUTO]]
-
-**Verification checklist**
-
-- Re-run Health Check.
-- In DevTools, ensure beacons return 2xx or 3xx responses.
-- Confirm sessions accumulate on the application overview.
-
-### 2.2 Data Arrives but Is Not Visible/Complete
-
-**Symptoms:** Intermittent gaps, certain geographies or users missing, dashboards empty.
-
-**Checks**
-
-- Dashboard filters and timeframes, privacy settings (opt-in/DNT) removing sessions. [[HC]]
-- RUM JavaScript track pinned to a build that excludes specific browsers; switch to a compatible track. [[VERSIONS]]
-- Review Health Check for discard reasons (privacy, opt-out, instrumentation errors). [[HC]]
-
-### 2.3 Sessions Missing, Split, or Unidentified
-
-- Dynatrace uses first-party cookies (`dtCookie`, `dtPC`, `rxVisitor`) for session and user correlation. Validate policies do not block or purge them. [[COOKIES]]
-- Understand user-identification strategy; confirm persistent identifiers are not reset by privacy choices or cookie-clearing processes.
-
-### 2.4 CSP, CORS, Beacon, and Cookies
-
-**Content Security Policy (CSP)**
-
-- Allow the monitoring script source (OneAgent served = `'self'`; Dynatrace CDN = `https://js-cdn.dynatracelabs.com`).
-- Add the beacon endpoint host to `connect-src`.
-- Provide Subresource Integrity hashes if your policy requires it. [[CSP]]
-
-**CORS and beacon allowlist**
-
-- For cross-origin beacons, configure the *Beacon origin allowlist* (Settings > Web & mobile monitoring > Web > Advanced setup). [[CORS]]
-
-**Cookie policies**
-
-- Ensure load balancers, CDNs, and reverse proxies do not strip Dynatrace cookies, especially on SPA routes and subdomains.
-
-### 2.5 Manual Customisation and dtrum API
-
-- Use `dtrum` API calls to control action names, load-duration brackets, or attach metadata when automatic detection is insufficient. [[DTRUM]]
-- Document custom actions so future migrations keep these hooks intact.
+  * **Browser DevTools → Network tab**: Look for `rb_data` or `rum` beacon calls. If missing → injection failed.
+  * **Validate script order**: RUM script must load early (in `<head>`) before other scripts.
+  * **Check CSP headers**: Ensure `*.dynatrace.com` or AG domain is whitelisted in `script-src` and `connect-src`.
+  * **Check Tenant URL**: Beacon must point to correct cluster URL (`/rb_bf`, `/rb_data`).
 
 ---
 
-## Session Replay (Web)
+### **1.2 Data reported in DevTools, but not visible in Dynatrace UI**
 
-- Check prerequisite toggles: Session Replay enabled, privacy level permits recording, and the replay JavaScript is the correct version.
-- Scope Session Replay to key user journeys (for example checkout, sign-up) and exclude sensitive DOM elements with masking rules.
-- Confirm storage (SaaS or Managed) has sufficient retention for replay tiles.
+* **Symptoms:** Beacons visible in browser, Dynatrace UI empty.
+* **Root Causes:**
 
----
+  * Wrong environment ID (script from different tenant).
+  * Application ID mismatch in config.
+  * RUM disabled for that application.
+  * Session sampling set to 0%.
+* **Troubleshooting:**
 
-## Mobile RUM (Android, iOS, Hybrid)
-
-### 4.1 Android
-
-- Add the Gradle plugin or agent according to the instrumentation type (automatic versus manual). [[ANDROID]]
-- Validate split APKs or modules include the agent and that push channels are compatible.
-- Confirm network beacon endpoints are not blocked by device-level firewalls or VPN profiles.
-
-### 4.2 iOS
-
-- Integrate via Swift Package Manager or CocoaPods; ensure build settings (Bitcode, App Clips) align with Dynatrace guidance. [[IOS]]
-- Enable WKWebView support if hybrid content exists.
-- Use the agent log to confirm startup events and user sessions are created.
-
-### 4.3 Hybrid (Native + WebView)
-
-- Ensure cookies and visitor IDs are shared between native and web content (see checklist C). [[HYBRID]]
-- Inject the JavaScript bridge and enable hybrid mode in the configuration.
+  * Inspect beacon payload → check `app=<id>` and `srvid`.
+  * Cross-verify Application ID in **Dynatrace console**.
+  * Validate *Application Settings → Capturing* (sampling % > 0).
 
 ---
 
-## Front-end & Back-end Correlation
+### **1.3 User sessions missing for certain users**
 
-- Map user actions to server-side PurePaths via header propagation (`x-dynatrace`).
-- For third-party beacons or external services, enable Distributed Tracing integration to retain context.
-- Verify that backend services are monitored and not excluded from topology detection.
+* **Symptoms:** Specific users report issues, but no sessions captured.
+* **Root Causes:**
 
----
+  * **IP filters** exclude internal traffic.
+  * **Privacy opt-out** or DNT header.
+  * **Session split** due to high actions (>200 actions/session).
+* **Troubleshooting:**
 
-## Quality Signals (Apdex, UX Outliers)
-
-- Review Apdex thresholds per application; adjust tolerating and frustrating thresholds to avoid false alerts.
-- Use custom action naming and properties so related actions are grouped consistently for Apdex scoring. [[CSP]]
-- Use *User sessions > Anomalies* to identify outlier users, devices, and geo segments quickly.
-
----
-
-## Synthetic Monitoring
-
-### 7.1 Monitors Failing
-
-- Configure outage handling (global versus location-specific), retry rules, excluded HTTP codes, and performance thresholds immediately after creation. [[SYNTH]]
-- Use *Synthetic details > Analyze executions* for waterfall charts and screenshots.
-- Align alerting profiles and maintenance windows with SLAs to minimise noise.
-
-### 7.2 Monitors Not Running
-
-- Check suppression reasons: maintenance windows, private-location capacity, missing browser capabilities.
-- Review monitor status messages and align location and device profiles with test requirements.
+  * Check **Application settings → Session & user action settings** → Exclusion filters.
+  * Search logs for “session split” events.
+  * If only HNI/VIP sessions → consider enabling **Selective RUM (via tagging + capture rules)**.
 
 ---
 
-## Reference Snippets & Checklists
+---
 
-### A. Minimal CSP Allowances for Web RUM
+## **2. Mobile Monitoring Challenges**
 
-```http
-# Example - extend your existing policy
-Content-Security-Policy:
-  script-src 'self' https://js-cdn.dynatracelabs.com 'unsafe-inline';
-  connect-src 'self' https://<your-beacon-host>;
-```
+### **2.1 Cordova / Hybrid app session splitting**
 
-- Use `'self'` when RUM code is injected by OneAgent.
-- Include the CDN host (`https://js-cdn.dynatracelabs.com`) when using the Dynatrace-served snippet.
-- Add your beacon host to `connect-src`. Configure the beacon-origin allowlist for cross-origin beacons. [[CSP]] [[CORS]]
+* **Symptoms:** One logical session appears as multiple smaller sessions.
+* **Root Causes:**
 
-### B. Beacon Endpoint Choices (Web)
+  * WebView doesn’t share correlation context.
+  * Dynatrace SDK not bridging JS → native boundary.
+* **Troubleshooting:**
 
-- **Default:** OneAgent-hosted endpoints (`/rb_`).
-- **Alternatives:** Re-prefix beacons or send directly to Dynatrace SaaS or ActiveGate; adjust CORS accordingly. [[BEACON]]
-
-### C. Android Hybrid Session Merge (Example)
-
-```groovy
-dynatrace {
-  configurations {
-    releaseConfig {
-      hybridWebView {
-        enabled true
-        httpsDomains '.yourdomain.com', '.sub.yourdomain.com'
-      }
-    }
-  }
-}
-```
-
-Ensures IDs align so native and web traffic merges into a single hybrid session. [[HYBRID]]
-
-### D. Control SPA Load End via `dtrum`
-
-- Use `dtrum.signalOnLoadStart()` / `signalOnLoadEnd()` with `setLoadEndManually()` to align SPA action durations with actual interactivity. [[DTRUM]]
+  * Upgrade Dynatrace Cordova plugin to latest version.
+  * Ensure WebView instrumentation enabled in config.
+  * Manually propagate correlation header (`x-dynatrace`) in hybrid HTTP calls.
 
 ---
 
-## Source Index
+### **2.2 Mobile SDK crashes / ANRs not reported**
 
-- Health Check and diagnostics: [[HC]]
-- Auto-injection rules, snippets, and cache-control: [[AUTO]]
-- Beacon routing and SaaS/ActiveGate options: [[BEACON]]
-- Beacon origin allowlist (CORS): [[CORS]]
-- RUM customisation and CSP guidance: [[CSP]]
-- RUM JavaScript tracks and browser coverage: [[VERSIONS]]
-- RUM cookies: [[COOKIES]]
-- `dtrum` JavaScript API: [[DTRUM]]
-- Android instrumentation: [[ANDROID]]
-- iOS instrumentation: [[IOS]]
-- Hybrid WebView configuration: [[HYBRID]]
-- Synthetic configuration, analysis, and alerting: [[SYNTH]]
+* **Symptoms:** Crash visible on device, missing in Dynatrace.
+* **Root Causes:**
+
+  * SDK not initialized early (before `onCreate` in Android, `AppDelegate` in iOS).
+  * Native crash reporting not enabled (NDK/iOS symbolication missing).
+* **Troubleshooting:**
+
+  * Validate SDK init order.
+  * Check **Crash reports tab** in Dynatrace → enable **NDK/ANR capture**.
+  * Run test crash → confirm ingestion.
 
 ---
 
-[HC]: https://docs.dynatrace.com/docs/observe/digital-experience/web-applications/troubleshoot/health-check
-[AUTO]: https://docs.dynatrace.com/docs/observe/digital-experience/web-applications/setup-and-configuration
-[BEACON]: https://docs.dynatrace.com/docs/observe/digital-experience/web-applications/traffic-management
-[CORS]: https://docs.dynatrace.com/docs/observe/digital-experience/web-applications/setup-and-configuration/cors-settings
-[CSP]: https://docs.dynatrace.com/docs/observe/digital-experience/web-applications/setup-and-configuration/content-security-policy
-[VERSIONS]: https://docs.dynatrace.com/docs/observe/digital-experience/web-applications/setup-and-configuration/javascript-versions
-[COOKIES]: https://community.dynatrace.com/t5/Real-User-Monitoring/Dynatrace-Cookies-and-User-Session-Correlation/ba-p/168080
-[DTRUM]: https://www.dynatrace.com/support/doc/javascriptapi/doc/interfaces/dtrum-types.DtrumApi.html
-[ANDROID]: https://docs.dynatrace.com/docs/extend-dynatrace/mobile-monitoring/android/instrumentation
-[IOS]: https://docs.dynatrace.com/docs/extend-dynatrace/mobile-monitoring/ios/instrumentation
-[HYBRID]: https://docs.dynatrace.com/docs/extend-dynatrace/mobile-monitoring/android/hybrid-support
-[SYNTH]: https://docs.dynatrace.com/docs/observe/digital-experience/synthetic-monitoring
+---
+
+## **3. Instrumentation & Compatibility**
+
+### **3.1 Injection types (auto, manual, tag manager)**
+
+* **Troubleshooting Path:**
+
+  * **Auto-injection (OneAgent):**
+
+    * Ensure OneAgent installed on web server → check Process group settings → `Enable RUM injection`.
+    * For CDN-hosted static content → auto-injection won’t work → switch to manual.
+  * **Manual snippet:**
+
+    * Copy snippet from Application settings.
+    * Place in `<head>` above all scripts.
+  * **Tag Manager (e.g., GTM):**
+
+    * Load Dynatrace script synchronously, not async.
+    * Ensure no duplicate injection.
+
+---
+
+### **3.2 Unsupported technologies / frameworks**
+
+* **Examples:** Electron, React Native WebView, Angular wrappers, custom fetch libraries.
+* **Symptoms:** User actions/API calls not showing.
+* **Troubleshooting:**
+
+  * Use **`dtrum` JS API**:
+
+    ```js
+    var action = dtrum.enterAction("Validate Card API");
+    fetch('/api/payment/validateCard').finally(() => dtrum.leaveAction(action));
+    ```
+  * For React Native/Electron → use Dynatrace SDK + OpenTelemetry bridge.
+  * Use **custom properties** to enrich sessions when default capture is insufficient.
+
+---
+
+---
+
+## **4. Data Completeness & Correlation**
+
+### **4.1 Missing actions (esp. custom APIs)**
+
+* **Troubleshooting:**
+
+  * Check if XHR/fetch capturing is enabled → *Application settings → Advanced setup*.
+  * For Axios/GraphQL → wrap with `dtrum.enterAction()`.
+  * Verify beacon size limit → >150KB payloads may drop.
+
+---
+
+### **4.2 Front-end to back-end correlation failures**
+
+* **Symptoms:** RUM shows action, backend traces missing.
+* **Root Causes:**
+
+  * Correlation headers stripped by proxy/CDN (e.g., `x-dynatrace`, `traceparent`).
+  * Backend not monitored (no OneAgent / no OTLP ingestion).
+* **Troubleshooting:**
+
+  * Browser DevTools → Inspect request headers → check `x-dynatrace` / `traceparent`.
+  * If missing in server logs → proxy is stripping → whitelist headers.
+  * Ensure backend services monitored by OneAgent or connected via **OpenTelemetry ingestion**.
+
+---
+
+---
+
+## **5. Quality & Metrics**
+
+### **5.1 Low Apdex despite “everything looks fine”**
+
+* **Troubleshooting:**
+
+  * Verify **Apdex thresholds** (default: Satisfied ≤ 3s, Tolerating ≤ 12s). Adjust per SLA.
+  * Check for **outlier sessions** dragging score down (one 120s action can skew).
+  * Validate if background/technical actions are included → exclude non-business actions from Apdex calc.
+  * Align Apdex with **Core Web Vitals (LCP, FID, CLS)** for UX realism.
+
+---
+
+---
+
+## **6. Synthetic Monitoring**
+
+### **6.1 Synthetic browser monitor works locally, fails when deployed**
+
+* **Troubleshooting:**
+
+  * Check if target URL is publicly reachable from Dynatrace synthetic locations.
+  * Verify login credentials and tokens are correctly parameterized (don’t hardcode).
+  * Add **dynamic wait conditions** (`Wait for element visible`) instead of static sleeps.
+  * Whitelist Dynatrace synthetic agent IPs in firewalls.
+  * Re-record if app selectors (DOM) changed post-deployment.
+
+---
+
+### **6.2 HTTP/API monitors failing randomly**
+
+* **Troubleshooting:**
+
+  * Validate response code expectations.
+  * Check if API needs auth token → use **credential vault** in Dynatrace.
+  * Confirm SSL certificate trust chain → add custom CA if needed.
+  * Check proxy/geo routing from synthetic location.
+
+---
+
+---
+
+## **7. General Troubleshooting Checklist**
+
+1. **Check Injection** → Is script present? Is it in `<head>`? Auto vs. manual?
+2. **Check Beacon** → Are beacon calls (`rb_data`) visible? Reaching cluster? Correct env ID?
+3. **Check Filters** → Any IP/user-agent/domain exclusions applied?
+4. **Check Correlation** → Are headers (`x-dynatrace`, `traceparent`) intact?
+5. **Check Backend** → Is OneAgent/OTLP present to stitch traces?
+6. **Check Sampling** → Any aggressive sampling dropping sessions?
+7. **Check Security** → CSP, firewalls, proxies blocking injection/beacons?
+8. **Check Thresholds** → Apdex and Core Web Vitals aligned with business SLAs?
+9. **Check SDKs** → For mobile/hybrid apps, SDKs initialized early and updated?
+10. **Check Synthetic** → Public accessibility, credentials, waits, whitelisting.
+
+---
+
+# ✅ **Summary**
+
+This guide covers **end-to-end troubleshooting for DEM**:
+
+* **RUM injection & beacon issues**
+* **Session gaps & sampling**
+* **Mobile SDK & hybrid app quirks**
+* **Action capture & correlation**
+* **Apdex & quality anomalies**
+* **Synthetic browser/API monitor pitfalls**
+
