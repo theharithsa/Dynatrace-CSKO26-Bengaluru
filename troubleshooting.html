@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type="text/javascript" src="https://js-cdn.dynatrace.com/jstag/18b1df4492a/bf12470wrz/d42e77528fef2833_complete.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynatrace CSKO Troubleshooting Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="script.js"></script>
+    <script defer src="troubleshooting.js"></script>
+  </head>
+  <body>
+    <header class="hero hero--subpage" role="banner">
+      <div class="hero__noise" aria-hidden="true"></div>
+      <nav class="top-nav" aria-label="Primary">
+        <a class="top-nav__logo" href="index.html">CSKO26</a>
+        <div class="top-nav__links">
+          <a class="top-nav__link" href="index.html">Home</a>
+          <a class="top-nav__link" href="index.html#agenda">Agenda</a>
+          <a class="top-nav__link" href="index.html#dtrum-lab">Lab</a>
+          <a class="top-nav__link" href="glossary.html">Glossary</a>
+          <a
+            class="top-nav__link top-nav__link--active"
+            href="troubleshooting.html"
+            aria-current="page"
+            >Troubleshooting</a
+          >
+          <a
+            class="top-nav__link top-nav__link--cta"
+            href="https://app.sli.do/event/hzAPByoscsrCpMScvdB1KJ"
+            >Join Slido</a
+          >
+        </div>
+      </nav>
+      <div class="hero__content">
+        <p class="hero__eyebrow">Dynatrace CSKO 2026 — Bengaluru</p>
+        <h1 class="hero__title">Troubleshooting playbook</h1>
+        <p class="hero__subtitle">
+          Reference the latest runbook notes from chat support engineers without leaving the neon mission control.
+        </p>
+        <div class="hero__actions">
+          <a class="hero__cta" href="#guide">Jump to the guide</a>
+          <a class="hero__cta hero__cta--alt" href="index.html">Return to kickoff home</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel" id="guide" aria-labelledby="guide-title">
+        <div class="panel__inner">
+          <h2 id="guide-title">Troubleshooting guide</h2>
+          <p>
+            The sections below are rendered directly from <code>troubleshooting-guide.md</code> so documentation updates stay perfectly in sync.
+          </p>
+          <nav class="toc doc__toc" aria-label="Troubleshooting sections" data-troubleshooting-toc hidden></nav>
+          <div
+            class="doc"
+            data-troubleshooting-target
+            data-source="troubleshooting-guide.md"
+            aria-live="polite"
+          >
+            <p class="doc__placeholder">Loading troubleshooting guide…</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+      <p>
+        Made with dY's by the Dynatrace CSKO chat support crew. Instrumentation ready for Dynatrace RUM, puns ready for deployment.
+      </p>
+    </footer>
+  </body>
+</html>
