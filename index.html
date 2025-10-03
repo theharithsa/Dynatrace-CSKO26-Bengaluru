@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script type="text/javascript" src="https://js-cdn.dynatrace.com/jstag/18b1df4492a/bf12470wrz/d42e77528fef2833_complete.js" crossorigin="anonymous"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dynatrace CSKO Chat Support Kickoff</title>
@@ -12,11 +13,6 @@
     />
     <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
-
-    <!-- Dynatrace RUM instrumentation placeholder -->
-    <!-- Replace the following script src with your Dynatrace RUM JavaScript tag.
-         Example: <script src="https://{your-environment-id}.live.dynatrace.com/..." type="text/javascript" crossorigin="anonymous"></script>
-         Ensure this tag is loaded before other scripts to capture full user sessions. -->
   </head>
   <body>
     <header class="hero" role="banner">
@@ -89,73 +85,67 @@
 
       <section class="panel panel--highlight" id="agenda" aria-labelledby="agenda-title">
         <div class="panel__inner">
-          <h2 id="agenda-title">Agenda download</h2>
+          <h2 id="agenda-title">CSKO Session Structure</h2>
           <ol class="timeline" role="list">
             <li class="timeline__item">
-              <time datetime="2026-02-12T09:00">09:00</time>
+              <time aria-hidden="true">ART 01</time>
               <div>
-                <h3>Retro-futuristic welcome</h3>
-                <p>
-                  Grab your badges, sync your headsets, and enjoy a synthwave
-                  coffee while we teleport into the session.
-                </p>
+                <h3>Ice Breaker Questions</h3>
+                <p>Warm up the room with lightning prompts that get everyone sharing fast.</p>
               </div>
             </li>
             <li class="timeline__item">
-              <time datetime="2026-02-12T09:30">09:30</time>
+              <time aria-hidden="true">ART 02</time>
               <div>
-                <h3>Chat insights remix</h3>
-                <p>
-                  Live dashboards, real user monitoring highlights, and the top
-                  five ticket saves that deserve their own fan club.
-                </p>
+                <h3>Website and Slido</h3>
+                <p>Showcase the event hub and open the Slido board so questions start flowing.</p>
               </div>
             </li>
             <li class="timeline__item">
-              <time datetime="2026-02-12T10:30">10:30</time>
+              <time aria-hidden="true">ART 03</time>
               <div>
-                <h3>Tooling turbocharge</h3>
-                <p>
-                  A tour of what&#39;s new in Dynatrace, with pro tips, shortcuts,
-                  and a friendly reminder to actually read release notes.
-                </p>
+                <h3>Introduction to DEM</h3>
+                <p>Ground the room in Digital Experience Monitoring and the value it unlocks.</p>
               </div>
             </li>
             <li class="timeline__item">
-              <time datetime="2026-02-12T11:15">11:15</time>
+              <time aria-hidden="true">ART 04</time>
               <div>
-                <h3>Break + meme exchange</h3>
-                <p>
-                  Hydrate, stretch, and swap your freshest observability memes.
-                  Bonus points for anything featuring Davis®.
-                </p>
+                <h3>Instrumenting the application</h3>
+                <p>Outline the end-to-end flow for lighting up DEM on our showcase app.</p>
               </div>
             </li>
             <li class="timeline__item">
-              <time datetime="2026-02-12T11:45">11:45</time>
+              <time aria-hidden="true">SCI 01</time>
               <div>
-                <h3>Strategy lab</h3>
-                <p>
-                  Roundtable brainstorms on scaling support, automation ideas,
-                  and how to turn SLAs into LOLs.
-                </p>
+                <h3>Instrumenting the application &ndash; Live demo</h3>
+                <p>Walk through the instrumentation steps live to reinforce the how-to.</p>
               </div>
             </li>
             <li class="timeline__item">
-              <time datetime="2026-02-12T12:30">12:30</time>
+              <time aria-hidden="true">SCI 02</time>
               <div>
-                <h3>Wrap + pixel party</h3>
-                <p>
-                  Celebrate our next steps, snap a team photo, and fire up the
-                  playlist for a vibey send-off.
-                </p>
+                <h3>Activities</h3>
+                <p>Break into pods for hands-on practice with instrumentation and analysis.</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <time aria-hidden="true">SCI 03</time>
+              <div>
+                <h3>Quiz</h3>
+                <p>Run a fast-paced knowledge check to capture key takeaways.</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <time aria-hidden="true">SCI 04</time>
+              <div>
+                <h3>Troubleshooting Guide</h3>
+                <p>Close with a ready-reference playbook for resolving common DEM issues.</p>
               </div>
             </li>
           </ol>
         </div>
-      </section>
-
-      <section class="panel" id="people" aria-labelledby="people-title">
+      </section>      <section class="panel" id="people" aria-labelledby="people-title">
         <div class="panel__inner panel__inner--split">
           <div>
             <h2 id="people-title">Cast &amp; crew</h2>
@@ -171,6 +161,33 @@
           </div>
           <div class="glow-card" role="img" aria-label="Dynatrace themed neon skyline">
             <span>Support heroes assemble</span>
+          </div>
+        </div>
+      </section>
+      <section class="panel" id="dtrum-lab" aria-labelledby="dtrum-lab-title">
+        <div class="panel__inner">
+          <h2 id="dtrum-lab-title">Dynatrace dtrum API lab</h2>
+          <p>
+            Launch sample calls for every dtrum API entry point. Start with the
+            setup cards, then explore interactions, beacons, session controls,
+            and diagnostic helpers. Check the call log for results or errors.
+          </p>
+          <div class="dtrum-lab__status" data-dtrum-status>
+            Checking for Dynatrace agent...
+          </div>
+          <div class="dtrum-lab__legend" aria-hidden="true">
+            <span class="dtrum-pill dtrum-pill--safe">Safe call</span>
+            <span class="dtrum-pill dtrum-pill--context">Needs context</span>
+            <span class="dtrum-pill dtrum-pill--danger">Agent toggle</span>
+          </div>
+          <div class="dtrum-lab__grid" data-dtrum-grid></div>
+          <div class="dtrum-lab__log">
+            <h3 class="dtrum-lab__log-title">Call log</h3>
+            <p class="dtrum-lab__log-hint">
+              Newest events appear first. Entries clear automatically after 20
+              items.
+            </p>
+            <ol class="dtrum-lab__log-list" data-dtrum-log aria-live="polite" aria-relevant="additions"></ol>
           </div>
         </div>
       </section>

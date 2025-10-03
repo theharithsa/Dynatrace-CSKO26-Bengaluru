@@ -304,7 +304,14 @@ main {
   margin: 0;
   padding: 0;
   display: grid;
+  grid-template-columns: 1fr;
   gap: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .timeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .timeline__item {
@@ -488,3 +495,201 @@ main {
     scroll-behavior: auto !important;
   }
 }
+
+.dtrum-lab__status {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(111, 80, 255, 0.35);
+  background: rgba(111, 80, 255, 0.12);
+  font-family: "VT323", monospace;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.dtrum-lab__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.dtrum-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(22, 255, 227, 0.12);
+  border: 1px solid rgba(22, 255, 227, 0.35);
+}
+
+.dtrum-pill--context {
+  background: rgba(255, 199, 0, 0.12);
+  border-color: rgba(255, 199, 0, 0.4);
+}
+
+.dtrum-pill--danger {
+  background: rgba(255, 87, 120, 0.12);
+  border-color: rgba(255, 87, 120, 0.35);
+}
+
+.dtrum-lab__grid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.dtrum-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(22, 255, 227, 0.18);
+  background: rgba(8, 12, 32, 0.8);
+  box-shadow: inset 0 0 0 1px rgba(22, 255, 227, 0.08);
+}
+
+.dtrum-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.dtrum-card__title {
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.dtrum-card__signature {
+  font-family: "VT323", monospace;
+  font-size: 0.85rem;
+  color: rgba(244, 246, 255, 0.75);
+}
+
+.dtrum-card__description {
+  color: rgba(244, 246, 255, 0.78);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.dtrum-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.dtrum-card button {
+  appearance: none;
+  border: 1px solid rgba(22, 255, 227, 0.4);
+  background: rgba(22, 255, 227, 0.12);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dtrum-card button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.dtrum-card button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(22, 255, 227, 0.18);
+}
+
+.dtrum-card__notes {
+  font-size: 0.78rem;
+  color: rgba(244, 246, 255, 0.6);
+  line-height: 1.4;
+}
+
+.dtrum-lab__log {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(111, 80, 255, 0.3);
+  background: rgba(22, 27, 58, 0.75);
+  box-shadow: inset 0 0 0 1px rgba(111, 80, 255, 0.15);
+}
+
+.dtrum-lab__log-title {
+  margin: 0;
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dtrum-lab__log-hint {
+  margin: 0.35rem 0 1rem;
+  font-size: 0.75rem;
+  color: rgba(244, 246, 255, 0.55);
+  letter-spacing: 0.04em;
+}
+
+.dtrum-lab__log-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.5rem;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.dtrum-lab__log-item {
+  font-family: "VT323", monospace;
+  font-size: 0.95rem;
+  color: rgba(244, 246, 255, 0.8);
+}
+
+.dtrum-lab__log-item--error {
+  color: #ff5778;
+}
+
+@media (max-width: 600px) {
+  .dtrum-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dtrum-card__signature {
+    font-size: 0.75rem;
+  }
+}
+.dtrum-card__status {
+  font-size: 0.8rem;
+  color: rgba(244, 246, 255, 0.58);
+  letter-spacing: 0.03em;
+}
+
+.dtrum-card__status--success {
+  color: var(--accent);
+}
+
+.dtrum-card__status--error {
+  color: #ff5778;
+}
+
+.dtrum-lab__status[data-variant="ready"] {
+  border-color: rgba(22, 255, 227, 0.55);
+  background: rgba(22, 255, 227, 0.12);
+  color: var(--accent);
+}
+
+.dtrum-lab__status[data-variant="error"] {
+  border-color: rgba(255, 87, 120, 0.5);
+  background: rgba(255, 87, 120, 0.12);
+  color: #ff5778;
+}
+
