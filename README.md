@@ -3,7 +3,7 @@ Repository for Dynatrace CSKO'26 resources
 
 ## Website
 
-This repo now includes a single-page website for the Dynatrace CSKO Chat Support Kickoff.
+This repo now includes a single-page website for the Dynatrace CSKO Chat Support Kickoff and a styled glossary companion page.
 
 ### Local preview
 
@@ -12,6 +12,11 @@ python -m http.server
 ```
 
 Then open <http://localhost:8000> in your browser.
+
+### Pages
+
+- `index.html` — kickoff landing page (includes Slido join link)
+- `glossary.html` — DEM glossary with 55+ terms and quick navigation
 
 ### Dynatrace RUM
 
