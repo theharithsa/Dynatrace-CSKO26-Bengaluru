@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynatrace DEM Glossary | CSKO Kickoff</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <header class="hero hero--subpage" role="banner">
+      <div class="hero__noise" aria-hidden="true"></div>
+      <nav class="top-nav" aria-label="Primary">
+        <a class="top-nav__logo" href="index.html">CSKO26</a>
+        <div class="top-nav__links">
+          <a class="top-nav__link" href="index.html">Home</a>
+          <a class="top-nav__link" href="index.html#agenda">Agenda</a>
+          <a
+            class="top-nav__link top-nav__link--active"
+            href="glossary.html"
+            aria-current="page"
+            >Glossary</a
+          >
+          <a
+            class="top-nav__link top-nav__link--cta"
+            href="https://app.sli.do/event/hzAPByoscsrCpMScvdB1KJ"
+            >Join Slido</a
+          >
+        </div>
+      </nav>
+      <div class="hero__content">
+        <p class="hero__eyebrow">Dynatrace CSKO 2026 · Bengaluru</p>
+        <h1 class="hero__title">DEM Glossary</h1>
+        <p class="hero__subtitle">
+          55+ Digital Experience Monitoring terms to keep your observability
+          powers sharp during the kickoff.
+        </p>
+        <div class="hero__actions">
+          <a class="hero__cta" href="#glossary">Browse the glossary</a>
+          <a class="hero__cta hero__cta--alt" href="index.html"
+            >Return to kickoff home</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel" id="glossary" aria-labelledby="toc-title">
+        <div class="panel__inner">
+          <h2 id="toc-title">Teleport around the terms</h2>
+          <p>
+            Jump straight to any topic below or simply scroll through the neon
+            knowledge base.
+          </p>
+          <nav class="toc" aria-label="Glossary sections">
+            <ul class="toc__list">
+              <li><a href="#core-concepts">Core Concepts</a></li>
+              <li><a href="#applications">Applications &amp; Sessions</a></li>
+              <li><a href="#errors">Errors</a></li>
+              <li><a href="#user-data">User Data Enrichment</a></li>
+              <li><a href="#performance">Performance Metrics</a></li>
+              <li><a href="#tools">Tools &amp; Traces</a></li>
+              <li><a href="#instrumentation">Instrumentation</a></li>
+              <li><a href="#synthetic">Synthetic Monitoring</a></li>
+              <li><a href="#troubleshooting">Troubleshooting &amp; Analysis</a></li>
+              <li><a href="#mobile">Mobile DEM</a></li>
+              <li><a href="#advanced">Advanced DEM</a></li>
+              <li><a href="#additional">Additional &amp; Refined Terms</a></li>
+            </ul>
+          </nav>
+        </div>
+      </section>
+
+      <section class="panel" id="core-concepts" aria-labelledby="core-concepts-title">
+        <div class="panel__inner">
+          <h2 id="core-concepts-title">Core Concepts</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Digital Experience Monitoring (DEM)</h3>
+              <p class="glossary__description">
+                The umbrella of Dynatrace capabilities spanning Real User
+                Monitoring (RUM), Synthetic Monitoring, and Session Replay. DEM
+                captures how real and simulated users experience your
+                applications from end to end.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">RUM (Real User Monitoring)</h3>
+              <p class="glossary__description">
+                Passive monitoring of actual user interactions on web and mobile
+                applications. Tracks load times, errors, geographies, devices,
+                and Core Web Vitals to reveal lived performance.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Synthetic Monitoring</h3>
+              <p class="glossary__description">
+                Active monitoring driven by scripted bots that simulate user
+                journeys from chosen locations. Ideal for validating uptime and
+                performance even when no real users are online.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="applications" aria-labelledby="applications-title">
+        <div class="panel__inner">
+          <h2 id="applications-title">Applications &amp; Sessions</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Application (RUM context)</h3>
+              <p class="glossary__description">
+                A logical container representing a monitored web or mobile app.
+                Defines domains, injection rules, and properties for capturing
+                user actions.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">User Session</h3>
+              <p class="glossary__description">
+                A continuous sequence of actions from a single user. Starts with
+                the first captured action and ends after inactivity or the
+                session timeout (roughly 35 minutes by default).
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">User Action</h3>
+              <p class="glossary__description">
+                A measurable interaction within a session such as a page load,
+                button click, or tracked API call.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Load Action</h3>
+              <p class="glossary__description">
+                A user action for a full page navigation. Includes DOM loading,
+                resource timings, and Core Web Vital metrics.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">XHR Action (AJAX/FETCH Action)</h3>
+              <p class="glossary__description">
+                A user action triggered by background requests without a full
+                reload. Tracks asynchronous calls like XHR or Fetch API.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Custom Action</h3>
+              <p class="glossary__description">
+                A manually defined user action for interactions that do not
+                automatically trigger network calls, such as opening modals.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Conversion Goals</h3>
+              <p class="glossary__description">
+                Business KPIs configured in Dynatrace—like checkout completions
+                or login success—measured across sessions and funnels.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="errors" aria-labelledby="errors-title">
+        <div class="panel__inner">
+          <h2 id="errors-title">Errors</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Errors (in DEM)</h3>
+              <p class="glossary__description">
+                User-visible failures detected at the frontend: failed requests,
+                JavaScript runtime errors, and custom errors defined by your
+                team.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Request Error</h3>
+              <p class="glossary__description">
+                API or XHR call returning HTTP 4xx/5xx responses or failing due
+                to timeouts and network issues.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">JavaScript Errors</h3>
+              <p class="glossary__description">
+                Browser runtime errors such as <code>TypeError: undefined is not
+                a function</code> that affect user experience.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Custom Errors</h3>
+              <p class="glossary__description">
+                Application-specific errors captured via the Dynatrace RUM API,
+                for example form validation issues.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Mobile Application Crashes</h3>
+              <p class="glossary__description">
+                Sudden termination of a mobile app captured by the Dynatrace
+                mobile agent, complete with stack traces and device metadata.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="user-data" aria-labelledby="user-data-title">
+        <div class="panel__inner">
+          <h2 id="user-data-title">User Data Enrichment</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">User Action Properties</h3>
+              <p class="glossary__description">
+                Custom metadata—such as product IDs or cart values—attached to
+                individual user actions.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">User Session Properties</h3>
+              <p class="glossary__description">
+                Metadata applied to entire sessions, like account tier, region,
+                or subscription level.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">User Tagging</h3>
+              <p class="glossary__description">
+                Mapping anonymous session data to known identities such as
+                usernames or emails.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="performance" aria-labelledby="performance-title">
+        <div class="panel__inner">
+          <h2 id="performance-title">Performance Metrics</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">W3C Timings</h3>
+              <p class="glossary__description">
+                Browser-provided timings covering DNS lookup, TCP handshake,
+                first byte, DOM load, and more throughout the page lifecycle.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Core Web Vitals</h3>
+              <div class="glossary__description">
+                Key Google metrics for user experience:
+                <ul class="glossary__list">
+                  <li><strong>LCP</strong> (Largest Contentful Paint) for load speed</li>
+                  <li><strong>FID</strong> (First Input Delay) for responsiveness</li>
+                  <li><strong>CLS</strong> (Cumulative Layout Shift) for visual stability</li>
+                </ul>
+              </div>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Apdex (Application Performance Index)</h3>
+              <p class="glossary__description">
+                A satisfaction score based on response time thresholds, grading
+                experiences as satisfied, tolerating, or frustrated.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Milestone Metrics</h3>
+              <p class="glossary__description">
+                Timestamp milestones such as navigation start, DOM interactive,
+                and first byte that help explain perceived load performance.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="tools" aria-labelledby="tools-title">
+        <div class="panel__inner">
+          <h2 id="tools-title">Tools &amp; Traces</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">HAR File (HTTP Archive)</h3>
+              <p class="glossary__description">
+                Browser-exported artifact detailing requests and responses for a
+                page load—useful for deep performance analysis.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Fiddler Trace</h3>
+              <p class="glossary__description">
+                Network capture recorded with Fiddler, helping compare frontend
+                versus backend performance contributions.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">PWAs (Progressive Web Apps)</h3>
+              <p class="glossary__description">
+                Web apps with native-like features—offline use and installability—that
+                may require specialized RUM injection approaches.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Session Replay</h3>
+              <p class="glossary__description">
+                Visual replays of real sessions including clicks, scrolls, and
+                DOM changes to accelerate UX troubleshooting.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="instrumentation" aria-labelledby="instrumentation-title">
+        <div class="panel__inner">
+          <h2 id="instrumentation-title">Instrumentation</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">JS Injection</h3>
+              <p class="glossary__description">
+                Automatic insertion of the Dynatrace RUM agent into HTML
+                responses via OneAgent for effortless coverage.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">JS Tag (Manual Injection)</h3>
+              <p class="glossary__description">
+                A snippet manually added to the <code>&lt;head&gt;</code> of pages when
+                auto-injection is not feasible, such as CDN-hosted apps.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Synthetic Tags</h3>
+              <p class="glossary__description">
+                Labels applied to synthetic monitors to support grouping,
+                filtering, and reporting.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="synthetic" aria-labelledby="synthetic-title">
+        <div class="panel__inner">
+          <h2 id="synthetic-title">Synthetic Monitoring Components</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">VU Controller (Virtual User Controller)</h3>
+              <p class="glossary__description">
+                The orchestrator that schedules and coordinates execution of
+                synthetic test scripts.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">VU Player (Virtual User Player)</h3>
+              <p class="glossary__description">
+                The engine that executes browser-based synthetic steps, acting
+                like a robot user.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Browser Monitors</h3>
+              <p class="glossary__description">
+                Synthetic monitors launching a real browser to simulate
+                multi-step user journeys such as form fills.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">HTTP Monitors (API Monitors)</h3>
+              <p class="glossary__description">
+                Lightweight monitors issuing HTTP(S) requests to validate API
+                availability, latency, and response codes.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Network Monitors</h3>
+              <p class="glossary__description">
+                Synthetic probes measuring network performance, routing delay,
+                packet loss, and availability from chosen locations.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="troubleshooting" aria-labelledby="troubleshooting-title">
+        <div class="panel__inner">
+          <h2 id="troubleshooting-title">Troubleshooting &amp; Analysis</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">RUM Overload Protection</h3>
+              <p class="glossary__description">
+                Safeguard that limits the number of user actions captured per
+                minute during spikes to protect system health.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Session Splitting</h3>
+              <p class="glossary__description">
+                Automatic division of very long sessions (over 200 actions) into
+                multiple sessions for clarity.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Beacon</h3>
+              <p class="glossary__description">
+                The data packet sent by the RUM agent to Dynatrace containing
+                user action and session details.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">CDN Monitoring</h3>
+              <p class="glossary__description">
+                Strategies for tracking performance when content is delivered via
+                Content Delivery Networks.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">CORS Issues</h3>
+              <p class="glossary__description">
+                Failures that occur when beacons or XHR requests are blocked by
+                cross-origin restrictions.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">CSP (Content Security Policy)</h3>
+              <p class="glossary__description">
+                Browser security headers that can block the RUM agent unless the
+                policy allows it.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="mobile" aria-labelledby="mobile-title">
+        <div class="panel__inner">
+          <h2 id="mobile-title">Mobile DEM</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Mobile RUM SDK</h3>
+              <p class="glossary__description">
+                Dynatrace SDKs for iOS and Android capturing crashes, user
+                actions, and network calls in native apps.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Mobile Custom Events</h3>
+              <p class="glossary__description">
+                Developer-defined actions in mobile apps—for example, tapping a
+                "Transfer Money" button.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">App Version Tracking</h3>
+              <p class="glossary__description">
+                Ability to segment performance data by app version or build for
+                faster regression detection.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Device Context</h3>
+              <p class="glossary__description">
+                Metadata about the mobile device—OS, model, orientation, and
+                connectivity.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="advanced" aria-labelledby="advanced-title">
+        <div class="panel__inner">
+          <h2 id="advanced-title">Advanced DEM</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Business Events (BizEvents)</h3>
+              <p class="glossary__description">
+                High-value business events streamed from RUM data for advanced
+                analytics, automation, and alerting.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Synthetic Locations</h3>
+              <p class="glossary__description">
+                Dynatrace points-of-presence around the globe where synthetic
+                monitors execute.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Geo Heatmaps</h3>
+              <p class="glossary__description">
+                Visualizations that reveal performance trends by geographic
+                region.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">User Flow Visualization</h3>
+              <p class="glossary__description">
+                Session Flow charts that show how users progress between actions
+                and where they drop off.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Error Rate Metrics</h3>
+              <p class="glossary__description">
+                Aggregated percentage of failed actions compared to total
+                actions.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Bounce Rate</h3>
+              <p class="glossary__description">
+                Sessions where users perform only a single action before
+                leaving.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">First Party vs Third Party Resources</h3>
+              <p class="glossary__description">
+                Classification of monitored content—owned by you versus loaded
+                from external services.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">JS API (<code>dtrum</code>)</h3>
+              <p class="glossary__description">
+                Dynatrace-provided API for custom instrumentation: enter or
+                leave actions, report errors, and add metadata properties.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Sampling</h3>
+              <p class="glossary__description">
+                Intentionally limiting captured sessions to balance licensing and
+                system performance.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Session Timeout</h3>
+              <p class="glossary__description">
+                Configurable inactivity threshold—defaulting to about 35
+                minutes—after which a session closes.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Synthetic Recorder (Dynatrace Recorder)</h3>
+              <p class="glossary__description">
+                Chrome extension for recording multi-step synthetic browser
+                tests.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="additional" aria-labelledby="additional-title">
+        <div class="panel__inner">
+          <h2 id="additional-title">Additional &amp; Refined Terms</h2>
+          <div class="glossary">
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Instrumentation (Enhanced Definition)</h3>
+              <p class="glossary__description">
+                Embedding telemetry (JS agents, SDKs, hooks) into applications so
+                Dynatrace can collect monitoring data. Without instrumentation,
+                no RUM or tracing signals are captured.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">New RUM Experience / Grail Storage</h3>
+              <p class="glossary__description">
+                Dynatrace&rsquo;s modern RUM ingestion path that stores data in
+                Grail for unified schemas, flexible analytics, and improved
+                scalability.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">View (Mobile / New RUM)</h3>
+              <p class="glossary__description">
+                A screen or window within mobile and new RUM contexts used to map
+                transitions, measure load times, and associate errors.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">ANR (Application Not Responding)</h3>
+              <p class="glossary__description">
+                Mobile state where the main thread is blocked long enough for the
+                OS to warn or terminate the app; Dynatrace captures ANRs on
+                supported Android versions.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Native Crash Reporting (Mobile)</h3>
+              <p class="glossary__description">
+                Capture of crashes originating from native code (for example C/C++
+                via Android NDK) when the app restarts shortly after the crash.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">IdentifyUser / User Identification API</h3>
+              <p class="glossary__description">
+                Dynatrace functions to map anonymous sessions to known user IDs,
+                consolidating activity across devices and visits.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Business Events (Biz Events) &ndash; Enhanced</h3>
+              <p class="glossary__description">
+                Business-level events—such as purchases or signups—that bridge
+                observability metrics with commercial outcomes.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">OpenTelemetry / OTLP / Propagators</h3>
+              <p class="glossary__description">
+                Open standards for instrumentation across metrics, traces, and
+                logs. Dynatrace can ingest OTLP data and understand propagated
+                context.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Semantic Dictionary / Global Fields</h3>
+              <p class="glossary__description">
+                Standardized Dynatrace field names—such as
+                <code>timestamp</code>—that keep data aligned across logs, spans,
+                metrics, and events.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Trace / Distributed Trace</h3>
+              <p class="glossary__description">
+                The recorded path of a request as it hops across services, with
+                each segment captured as a span that Dynatrace stitches together.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Davis Event / Problem / Root Cause (Davis AI)</h3>
+              <p class="glossary__description">
+                Davis&reg;, the Dynatrace AI, groups anomalies into problems and
+                pinpoints root causes—distinct from individual user action errors.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Configuration API (RUM / Dynatrace API)</h3>
+              <p class="glossary__description">
+                APIs that automate RUM settings including beacon domains and
+                application detection rules.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Allowed Beacon Domains</h3>
+              <p class="glossary__description">
+                Whitelists specifying which domains can receive beacon traffic;
+                mismatches prevent data from reaching Dynatrace.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Content Security Policy / Traceparent / Beacon Blocking</h3>
+              <p class="glossary__description">
+                Security policies, missing headers like <code>traceparent</code>,
+                or firewalls can block RUM beacons—ensure required rules allow
+                them.
+              </p>
+            </article>
+            <article class="glossary__entry">
+              <h3 class="glossary__term">Maximum User Action Duration / Clipping</h3>
+              <p class="glossary__description">
+                Guardrail that closes or clips user actions exceeding Dynatrace
+                duration limits to keep datasets clean.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel--highlight" id="references" aria-labelledby="references-title">
+        <div class="panel__inner">
+          <h2 id="references-title">References</h2>
+          <p>
+            Curated from Dynatrace documentation, enablement workshops, and
+            CSKO26 prep notes so the whole crew shares the same DEM vocabulary.
+          </p>
+          <p class="panel__note">Last updated: October 2025</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+      <p>
+        Crafted with 💚 by the Dynatrace CSKO chat support crew. Keep the neon
+        knowledge flowing and the RUM beacons glowing.
+      </p>
+    </footer>
+  </body>
+</html>

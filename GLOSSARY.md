@@ -2,6 +2,8 @@
 
 A comprehensive glossary of Digital Experience Monitoring (DEM) terms for Dynatrace CSKO26 Bengaluru.
 
+👉 Prefer the neon-styled version? [Explore the interactive glossary](glossary.html).
+
 ## 📋 Table of Contents
 
 - [Core Concepts](#core-concepts)
