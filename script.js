@@ -22,8 +22,29 @@ function cycleSlogans() {
 setInterval(cycleSlogans, 5000);
 
 document.addEventListener("DOMContentLoaded", () => {
+  setupSmoothScroll();
   initDtrumLab();
 });
+
+function setupSmoothScroll() {
+  const links = document.querySelectorAll("a[href^='#']:not([href='#'])");
+  if (!links.length) return;
+
+  links.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const targetId = link.getAttribute("href").slice(1);
+      if (!targetId) return;
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
+      event.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      link.blur();
+    });
+  });
+}
 
 function initDtrumLab() {
   const grid = document.querySelector("[data-dtrum-grid]");
